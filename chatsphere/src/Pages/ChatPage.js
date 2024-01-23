@@ -1,28 +1,20 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
+import React from 'react';
+import { Box } from '@chakra-ui/react';
+import { ChatState } from '../Context/ChatProvider';
+import SideDrawer from '../Components/Miscelleneous/SideDrawer';
+import ChatBox from '../Components/ChatBox';
+import MyChats from '../Components/MyChats';
 
 const ChatPage = () => {
-  const [chats, setChats] = useState([]);
-
-  const fetchChats = async () => {
-    try {
-      const response = await axios.get('/api/chat');
-      const chatData = response.data; // Adjust this based on your API response structure
-      setChats(chatData);
-    } catch (error) {
-      console.error('Error fetching chats:', error);
-    }
-  };
-
-  useEffect(() => {
-    fetchChats();
-  }, []);
+  const { user } = ChatState();
 
   return (
-    <div>
-      {chats.map((chat) => (
-        <div key={chat.id}>{chat.chatName}</div>
-      ))}
+    <div style={{ width: '100%' }}>
+      {user && <SideDrawer />}
+      <Box display="flex" flexDirection="row" justifyContent="space-between" h="91.5vh" p="10px">
+        {user && <MyChats />}
+        {user && <ChatBox />}
+      </Box>
     </div>
   );
 };

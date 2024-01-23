@@ -5,12 +5,14 @@ const {chats} =require("./Data/Data")
 const dotenv=require("dotenv")
 const connectDB=require("./Config/db")
 const  userRoutes=require('./Routes/userRoutes');
+const chatRoutes=require("./Routes/chatRoutes")
 const { notFound, errorHandler } = require("./Middleware/errorMiddleware");
 
 
 dotenv.config();
 connectDB();
 app.use('/api/user',userRoutes)
+app.use('/api/chat',chatRoutes)
 app.get("/",(req,res)=>{
     res.send("API is running")
 });

@@ -29,9 +29,44 @@ const Login = () => {
                 isClosable:true,
                 position:"bottom",
         })
+        setLoading(false);
+        return;
     }
-
+    try{
+        const config={
+            headers:{
+                "contentType":"application/json",
+            },
+        }
+    
+    const {data}=await axios.post(
+        "/api/user/login",
+        {email,password},
+        config
+    )
+    toast({
+                title:"Login successfull",
+                status:"success",
+                duration:5000,
+                isClosable:true,
+                position:"bottom",
+    })
+    localStorage.setItem("userInfo",JSON.stringify(data))
+    setLoading(false)
+    history.push("/chats")
    }
+   catch(error){
+    toast({
+        title:"Error occured",
+        desciption:error.response.data.message,
+        status:"error",
+        duration:5000,
+        isClosable:true,
+        position:"bottom",
+        })
+        setLoading(false)
+    }
+}
   return (
     <VStack spacing='5px' color="black">
         
@@ -39,24 +74,26 @@ const Login = () => {
             <FormLabel>Email</FormLabel>
             <Input
                 placeholder="Enter Your Email"
+                value={email}
                 onChange={(e)=>setEmail(e.target.value)}
             />
         </FormControl>
-        <FormControl id='password' isRequired >
-            <FormLabel>Password</FormLabel>
-            <InputGroup>
-            <Input
-            type={show ?"text":"password"}
-                placeholder="Enter Your Password"
-                onChange={(e)=>setPassword(e.target.value)}
-            />
-            <InputRightElement width="4.5rem">
-                <Button h="1.7rem" size="sm" onClick={handleClick}>
-                     {show ? "Hide" : "Show"}
-                </Button>
-            </InputRightElement>
-            </InputGroup>
-        </FormControl>
+        <FormControl id="password" isRequired>
+        <FormLabel>Password</FormLabel>
+        <InputGroup size="md">
+          <Input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            type={show ? "text" : "password"}
+            placeholder="Enter password"
+          />
+          <InputRightElement width="4.5rem">
+            <Button h="1.75rem" size="sm" onClick={handleClick}>
+              {show ? "Hide" : "Show"}
+            </Button>
+          </InputRightElement>
+        </InputGroup>
+      </FormControl>
        
        
         <Button
