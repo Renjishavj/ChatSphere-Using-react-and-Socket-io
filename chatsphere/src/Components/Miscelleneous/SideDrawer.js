@@ -62,6 +62,7 @@ const SideDrawer = () => {
       
             setLoading(false);
             setSearchResult(data);
+
           } catch (error) {
             toast({
               title: "Error Occured!",
@@ -101,7 +102,6 @@ const SideDrawer = () => {
           }
     
       }
-
   return (
    <>
         <Box

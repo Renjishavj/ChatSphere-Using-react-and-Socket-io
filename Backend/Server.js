@@ -7,12 +7,14 @@ const connectDB=require("./Config/db")
 const  userRoutes=require('./Routes/userRoutes');
 const chatRoutes=require("./Routes/chatRoutes")
 const { notFound, errorHandler } = require("./Middleware/errorMiddleware");
+const messageRoutes=require('./Routes/messageRoutes')
 
 
 dotenv.config();
 connectDB();
 app.use('/api/user',userRoutes)
 app.use('/api/chat',chatRoutes)
+app.use('/api/message',messageRoutes)
 app.get("/",(req,res)=>{
     res.send("API is running")
 });

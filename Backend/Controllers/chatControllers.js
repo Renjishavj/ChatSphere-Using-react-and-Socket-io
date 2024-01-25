@@ -78,6 +78,7 @@ const createGroupChat = asyncHandler(async (req, res) => {
   }
 
   var users = JSON.parse(req.body.users);
+  //console.log(users);
 
   if (users.length < 2) {
     return res
@@ -86,12 +87,16 @@ const createGroupChat = asyncHandler(async (req, res) => {
   }
 
   users.push(req.user);
+  console.log(users);
 
   try {
+    console.log(req.body)
+
     const groupChat = await Chat.create({
+      
       chatName: req.body.name,
       users: users,
-      isGroupChat: true,
+      isGroup: true,
       groupAdmin: req.user,
     });
 

@@ -1,33 +1,31 @@
 import { useEffect } from "react";
 import { createContext, useContext, useState } from "react";
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory } from "react-router-dom";
 
-const chatContext=createContext();
+const chatContext = createContext();
+const ChatProvider = ({ children }) => {
+//   const history = useHistory([]);
 
-const ChatProvider=({children})=>{
+  const [user, setUser] = useState();
+  const [selectedChat, setSelectedChat] = useState();
+  const [chats, setChats] = useState();
 
-const [user,setUser]=useState();
-const[selectedChat,setSelectedChat]=useState()
-const[chats,setChats]=useState()
-const history = useHistory([])
-
-useEffect(() => {
-
+  useEffect(() => {
     const userInfo = JSON.parse(localStorage.getItem("userInfo"));
     setUser(userInfo);
+    // if (!userInfo) history.push("/");
+  }, []);
 
-    if (!userInfo) history.push("/");
-   
-  }, [history]);
-
-
-return( <chatContext.Provider value={{user,setUser,setSelectedChat,selectedChat,setChats,chats}}>
-        {children}
+  return (
+    <chatContext.Provider
+      value={{ user, setUser, setSelectedChat, selectedChat, setChats, chats }}
+    >
+      {children}
     </chatContext.Provider>
-    )
-}
-export const ChatState=()=>{
-    return useContext(chatContext)
-}
+  );
+};
+export const ChatState = () => {
+  return useContext(chatContext);
+};
 
 export default ChatProvider;

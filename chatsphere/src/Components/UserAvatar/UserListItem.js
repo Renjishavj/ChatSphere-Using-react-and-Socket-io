@@ -1,10 +1,9 @@
 import { Avatar } from "@chakra-ui/avatar";
 import { Box, Text } from "@chakra-ui/layout";
-import { ChatState } from "../../Context/ChatProvider";
+
 
 const UserListItem = ({user, handleFunction }) => {
- 
-
+ console.log(user.isGroup)
   return (
     <Box
       onClick={handleFunction}
@@ -15,7 +14,7 @@ const UserListItem = ({user, handleFunction }) => {
         color: "white",
       }}
       w="100%"
-      d="flex"
+      display="flex"
       alignItems="center"
       color="black"
       px={3}
@@ -31,7 +30,7 @@ const UserListItem = ({user, handleFunction }) => {
         src={user.pic}
       />
       <Box>
-        <Text>{user.name}</Text>
+        <Text>{user.isGroup? user.chatName : user.name}</Text>
         <Text fontSize="xs">
           <b>Email : </b>
           {user.email}
