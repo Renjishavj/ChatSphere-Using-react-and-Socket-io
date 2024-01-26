@@ -1,7 +1,6 @@
 {
   "name": "chatsphere",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "start": "nodemon Backend/Server.js"
@@ -15,6 +14,8 @@
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
-    "nodemon": "^3.0.3"
-  }
+    "nodemon": "^3.0.3",
+    "socket-io-server": "^1.0.5"
+  },
+  "description": ""
 }
