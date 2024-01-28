@@ -10,6 +10,8 @@ import {
   FormControl,
   useToast,
 } from "@chakra-ui/react";
+import Lottie from "react-lottie"
+import animationData from "../animation/typing.json"
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import ProfileModal from "./Miscelleneous/ProfileModal";
 import { getSender, getSenderFull } from "../Config/ChatLogics";
@@ -31,6 +33,14 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [typing, setTyping] = useState(false);
   const [istyping, setIsTyping] = useState(false);
   const toast = useToast();
+  const defaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData: animationData,
+    rendererSettings: {
+      preserveAspectRatio: "xMidYMid slice",
+    },
+  };
 
   const { selectedChat, setSelectedChat, user, notification, setNotification } =
     ChatState();
@@ -114,8 +124,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
 
-    //selectedChatCompare = selectedChat;
+    selectedChatCompare = selectedChat;
   }, [selectedChat]);
+
+  useEffect(() => {
+    socket.on("message recieved", (newMessageRecieved) => {
+      if (
+        !selectedChatCompare || 
+        selectedChatCompare._id !== newMessageRecieved.chat._id
+      ) {
+        if (!notification.includes(newMessageRecieved)) {
+          setNotification([newMessageRecieved, ...notification]);
+          setFetchAgain(!fetchAgain);
+        }
+      } else {
+        setMessages([...messages, newMessageRecieved]);
+      }
+    });
+  });
+
 
   const typingHandler = (e) => {
     setNewMessage(e.target.value);
@@ -204,12 +231,25 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
               isRequired
               mt={3}
             >
+            {istyping ? (
+                <div>
+                  <Lottie
+                    options={defaultOptions}
+                    // height={50}
+                    width={70}
+                    style={{ marginBottom: 15, marginLeft: 0 }}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
               <Input
                 variant="filled"
                 bg="#E0E0E0"
                 placeholder="Enter a message.."
-                value={newMessage}
                 onChange={typingHandler}
+                value={newMessage}
+                
               />
             </FormControl>
           </Box>

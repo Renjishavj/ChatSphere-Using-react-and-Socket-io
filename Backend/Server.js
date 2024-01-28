@@ -8,16 +8,28 @@ const userRoutes = require("./Routes/userRoutes");
 const chatRoutes = require("./Routes/chatRoutes");
 const { notFound, errorHandler } = require("./Middleware/errorMiddleware");
 const messageRoutes = require("./Routes/messageRoutes");
+const path=require("path")
 
 dotenv.config();
 connectDB();
 app.use("/api/user", userRoutes);
 app.use("/api/chat", chatRoutes);
 app.use("/api/message", messageRoutes);
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
 
+//---------------------------------------deployment----------
+const _dirname1=path.resolve();
+if(process.env.NODE_ENV ==="production"){
+    app.use(express.static(path.join(_dirname1,'/chatsphere/build')));
+
+    app.get('*',(req,res)=>{
+      res.sendFile(path.resolve(_dirname1,"chatsphere","build","index.html"));
+    })
+} else{
+  app.get("/",(req,res)=>{
+    res.send("API is running")
+  })
+}
+//---------------------------------------deployment----------
 app.use(notFound);
 app.use(errorHandler);
 
@@ -26,13 +38,14 @@ const server = app.listen(3300, console.log(`server started on PORT ${PORT}`));
 const io = require("socket.io")(server, {
   pingTimeout: 60000,
   cors: {
-    origin: "http://localhost:3300",
+    origin: "http://localhost:3000",
     // credentials: true,
   },
 });
 
 io.on("connection", (socket) => {
   console.log("Connected to socket.io");
+
   socket.on("setup", (userData) => {
     socket.join(userData._id);
     socket.emit("connected");

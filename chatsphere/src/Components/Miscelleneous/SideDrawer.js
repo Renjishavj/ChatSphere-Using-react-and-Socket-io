@@ -9,11 +9,14 @@ Input,
 useToast,
 Spinner
 } from '@chakra-ui/react';
+import NotificationBadge from "react-notification-badge"
+import {getSender} from "../../Config/ChatLogics"
 import React from 'react'
 import { useState } from 'react';
 import { BellIcon, ChevronDownIcon } from '@chakra-ui/icons';
 import { ChatState } from '../../Context/ChatProvider';
 import ProfileModal from './ProfileModal';
+import { Effect } from 'react-notification-badge';
 import { useHistory } from 'react-router-dom/cjs/react-router-dom.min';
 import ChatLoading from '../ChatLoading';
 import axios from 'axios';
@@ -27,7 +30,7 @@ const SideDrawer = () => {
     const [loadingChat, setLoadingChat] = useState(false);
 
     const toast = useToast();
-    const {user,setSelectedChat,chats,setChats}=ChatState();
+    const {user,setSelectedChat,chats,setChats,notification,setNotification,}=ChatState();
     const history=useHistory()
     const { isOpen, onOpen, onClose } = useDisclosure();
 
@@ -129,10 +132,13 @@ const SideDrawer = () => {
         <div>
         <Menu>
             <MenuButton p={1}>
-              
+               <NotificationBadge
+                count={notification.length}
+                effect={Effect.SCALE}
+              />
               <BellIcon fontSize="2xl" m={1} />
             </MenuButton>
-            {/*<MenuList pl={2}>
+            <MenuList pl={2}>
               {!notification.length && "No New Messages"}
               {notification.map((notif) => (
                 <MenuItem
@@ -147,7 +153,7 @@ const SideDrawer = () => {
                     : `New Message from ${getSender(user, notif.chat.users)}`}
                 </MenuItem>
               ))}
-                  </MenuList>*/}
+                  </MenuList>
           </Menu>
           <Menu>
             <MenuButton as={Button} bg="white" rightIcon={<ChevronDownIcon />}>

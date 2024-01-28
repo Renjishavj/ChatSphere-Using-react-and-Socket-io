@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon Backend/Server.js"
+    "start": "nodemon Backend/Server.js",
+    "server":"nodemon Backend/Server.js",
+    "build":"npm install && npm install --prefix chatsphere && npm run build --prefix chatsphere"
   },
   "author": "renjisha",
   "license": "ISC",
@@ -15,7 +17,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.1.0",
     "nodemon": "^3.0.3",
-    "socket-io-server": "^1.0.5"
+    "socket.io": "^4.1.2"
   },
   "description": ""
 }
